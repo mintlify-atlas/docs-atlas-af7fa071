@@ -1,0 +1,55 @@
+{
+  "projectType": "general",
+  "projectName": "Desktop Configuration Files",
+  "projectDescription": "A curated collection of configuration files for Neovim, Tmux, Alacritty, and AeroSpace window manager",
+  "theme": "aspen",
+  "primaryColor": "#7aa2f7",
+  "lightColor": "#a9b1d6",
+  "darkColor": "#414868",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "introduction",
+          "installation"
+        ]
+      },
+      {
+        "group": "Configuration",
+        "pages": [
+          "nvim/overview",
+          "nvim/plugins",
+          "nvim/keymaps",
+          "tmux/overview",
+          "tmux/plugins",
+          "alacritty/overview",
+          "alacritty/themes",
+          "aerospace/overview",
+          "aerospace/keybindings"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": [
+          "guides/customization",
+          "guides/troubleshooting"
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "LazyVim-based Neovim configuration with custom plugins",
+    "Tmux setup with Catppuccin theme and TPM",
+    "Alacritty terminal with 151+ color themes",
+    "AeroSpace tiling window manager for macOS"
+  ],
+  "publicApiSurface": [
+    "nvim/init.lua - Neovim entry point",
+    "nvim/lua/config/ - Core configuration modules",
+    "nvim/lua/plugins/ - Plugin configurations",
+    "tmux/tmux.conf - Tmux configuration",
+    "alacritty/alacritty.toml - Alacritty settings",
+    "aerospace/aerospace.toml - AeroSpace window manager config"
+  ]
+}
