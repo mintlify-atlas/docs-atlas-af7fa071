@@ -1,0 +1,361 @@
+---
+title: 'Plugin Configuration'
+description: 'Custom plugins and configurations extending LazyVim'
+---
+
+## Overview
+
+This configuration extends LazyVim with custom plugins for colorschemes, competitive programming, note-taking, completion behavior, and Vim skill training. Each plugin is configured in its own file under `lua/plugins/`.
+
+<Info>
+  All plugin files are automatically loaded by lazy.nvim. Simply creating a new `.lua` file in the `lua/plugins/` directory will register the plugin.
+</Info>
+
+## Installed Plugins
+
+### Colorscheme Collection
+
+<Accordion title="colorscheme.lua - Multiple Theme Options">
+  The configuration includes several popular colorschemes with OneDark as the default:
+
+  ```lua lua/plugins/colorscheme.lua
+  return {
+    { "rebelot/kanagawa.nvim" },
+    { "NLKNguyen/papercolor-theme" },
+    { "ellisonleao/gruvbox.nvim" },
+    { "rose-pine/neovim" },
+    { "tiagovla/tokyodark.nvim" },
+    { "sainnhe/everforest" },
+    {
+      "navarasu/onedark.nvim",
+      opts = {
+        highlights = {
+          Visual = { bg = "#ffff00" },
+        },
+      },
+    },
+    {
+      "LazyVim/LazyVim",
+      opts = {
+        colorscheme = "onedark",
+      },
+    },
+  }
+  ```
+
+  **Available Themes:**
+  - **onedark** (default) - Atom's iconic One Dark theme
+  - **kanagawa** - Dark colorscheme inspired by famous paintings
+  - **papercolor** - Light and dark themes with 256-color support
+  - **gruvbox** - Retro groove color scheme
+  - **rose-pine** - Soho vibes for Neovim
+  - **tokyodark** - Clean dark theme
+  - **everforest** - Comfortable & pleasant theme
+
+  **Custom Highlights:**
+  - Visual selections use bright yellow background (`#ffff00`) for high contrast
+
+  **Switching Themes:**
+  To change the colorscheme, edit the `colorscheme` value in the LazyVim opts section, or use `:colorscheme <name>` to try themes temporarily.
+</Accordion>
+
+### Competitive Programming
+
+<Accordion title="leetcode.lua - LeetCode Integration">
+  Solve LeetCode problems directly in Neovim:
+
+  ```lua lua/plugins/leetcode.lua
+  return {
+    "kawre/leetcode.nvim",
+    build = ":TSUpdate html",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+    },
+    opts = {
+      lang = "python3",
+    },
+  }
+  ```
+
+  **Features:**
+  - Browse and search LeetCode problems
+  - Read problem descriptions in Neovim
+  - Write and test solutions locally
+  - Submit solutions directly to LeetCode
+  - Track your progress
+
+  **Configuration:**
+  - Default language: Python 3
+  - Uses Telescope for problem selection
+  - Treesitter support for syntax highlighting
+
+  **Usage:**
+  After configuration, use `:Leet` commands to interact with LeetCode (authentication required).
+</Accordion>
+
+### Note-Taking
+
+<Accordion title="obsidian.lua - Obsidian Vault Integration">
+  Seamless integration with Obsidian vaults:
+
+  ```lua lua/plugins/obsidian.lua
+  return {
+    "epwalsh/obsidian.nvim",
+    version = "*",
+    lazy = true,
+    ft = "markdown",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+    },
+    opts = {
+      workspaces = {
+        {
+          name = "personal",
+          path = "/Users/leylandyang/Library/Mobile Documents/iCloud~md~obsidian/Documents/Sharedvault",
+        },
+      },
+      completion = {
+        nvim_cmp = true,
+        min_chars = 2,
+      },
+      new_notes_location = "notes_subdir",
+      daily_notes = {
+        folder = "/daily notes",
+        date_format = "%m-%d-%Y",
+        alias_format = "%B %-d, %Y",
+        default_tags = { "daily-notes" },
+        template = nil,
+      },
+    },
+  }
+  ```
+
+  **Features:**
+  - Link to notes with `[[wiki-links]]`
+  - Autocompletion for note names and tags
+  - Daily notes with custom format
+  - Follow links with `gf`
+  - Create new notes from links
+  - Note templates support
+
+  **Configuration:**
+  - Workspace: Personal vault synced via iCloud
+  - Lazy-loaded only when opening markdown files
+  - Completion triggers after 2 characters
+  - Daily notes stored in `/daily notes` folder
+  - Date format: MM-DD-YYYY
+
+  <Note>
+    Update the `path` in `workspaces` to point to your own Obsidian vault location.
+  </Note>
+</Accordion>
+
+### Completion Behavior
+
+<Accordion title="tab-complete.lua - Custom Tab Completion">
+  Enhanced completion behavior with Tab key:
+
+  ```lua lua/plugins/tab-complete.lua
+  return {
+    {
+      "L3MON4D3/LuaSnip",
+      keys = function()
+        return {}
+      end,
+    },
+    {
+      "hrsh7th/nvim-cmp",
+      dependencies = {
+        "hrsh7th/cmp-emoji",
+      },
+      opts = function(_, opts)
+        local cmp = require("cmp")
+
+        opts.mapping = vim.tbl_extend("force", opts.mapping, {
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              local entry = cmp.get_selected_entry()
+              if not entry then
+                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+              else
+                cmp.confirm()
+              end
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<CR>"] = cmp.mapping(function(fallback)
+            cmp.abort()
+            fallback()
+          end, { "i", "s", "c" }),
+        })
+      end,
+    },
+  }
+  ```
+
+  **Behavior:**
+  - **Tab**: Confirms the selected completion item, or selects the first item if none is selected
+  - **Enter**: Aborts completion and inserts a newline (preserves normal behavior)
+  - Disables LuaSnip default keybindings to avoid conflicts
+  - Adds emoji completion support
+
+  **Rationale:**
+  This configuration makes Tab the primary completion key, which is more intuitive for many users. Enter always inserts a newline without accepting completions.
+
+  <Info>
+    This replaces the default LazyVim completion behavior where Enter accepts completions.
+  </Info>
+</Accordion>
+
+### UI Enhancements
+
+<Accordion title="snacks-config.lua - Snacks.nvim Picker Settings">
+  Configuration for the Snacks.nvim plugin (included in LazyVim):
+
+  ```lua lua/plugins/snacks-config.lua
+  return {
+    {
+      "folke/snacks.nvim",
+      opts = {
+        picker = {
+          hidden = true,
+          ignored = true,
+        },
+      },
+    },
+  }
+  ```
+
+  **Configuration:**
+  - `hidden = true`: Shows hidden files (dotfiles) in the file picker
+  - `ignored = true`: Includes files that are in `.gitignore` in search results
+
+  **Impact:**
+  These settings make the Snacks picker (used for file navigation) show all files, including those that would normally be hidden or ignored by git.
+</Accordion>
+
+### Skill Training
+
+<Accordion title="vimbegood.lua - Vim Practice Game">
+  A game to practice Vim motions:
+
+  ```lua lua/plugins/vimbegood.lua
+  return {
+    {
+      "ThePrimeagen/vim-be-good",
+      cmd = "VimBeGood",
+      lazy = true,
+    },
+  }
+  ```
+
+  **Features:**
+  - Practice hjkl navigation
+  - Word motion exercises
+  - CI/DI (change/delete inside) practice
+  - Gamified learning experience
+
+  **Usage:**
+  Run `:VimBeGood` to start the game. The plugin is lazy-loaded and only loads when you run the command.
+
+  **Games Available:**
+  - `relative`: Practice relative line jumps
+  - `hjkl`: Basic movement keys
+  - `word`: Word-wise movement
+  - `ci"`, `ci{`, `ci(`: Change inside motions
+  - `di"`, `di{`, `di(`: Delete inside motions
+</Accordion>
+
+### System Workarounds
+
+<Accordion title="mason-workaround.lua - LSP Version Lock">
+  Pins Mason and Mason-LSPConfig to specific versions:
+
+  ```lua lua/plugins/mason-workaround.lua
+  return {
+    { "mason-org/mason.nvim", version = "1.11.0" },
+    { "mason-org/mason-lspconfig.nvim", version = "1.32.0" },
+  }
+  ```
+
+  **Purpose:**
+  Locks Mason (the LSP/DAP/linter installer) and its LSP configuration bridge to specific versions. This ensures stability and prevents breaking changes from automatic updates.
+
+  **When to Update:**
+  If you encounter issues with LSP servers or want new features, you can:
+  1. Remove or comment out these version constraints
+  2. Run `:Lazy update` to get the latest versions
+  3. Test thoroughly
+  4. Update the version numbers if stable
+
+  <Note>
+    This is a temporary workaround. Remove it once compatibility issues are resolved.
+  </Note>
+</Accordion>
+
+## Plugin Management
+
+### Common Commands
+
+```bash
+# Open lazy.nvim interface
+:Lazy
+
+# Update all plugins
+:Lazy update
+
+# Check plugin status
+:Lazy check
+
+# Clean removed plugins
+:Lazy clean
+
+# Restore plugins from lockfile
+:Lazy restore
+
+# View plugin configuration
+:Lazy profile
+```
+
+### Adding New Plugins
+
+To add a new plugin:
+
+<Steps>
+  <Step title="Create Plugin File">
+    Create a new `.lua` file in `lua/plugins/`, for example `lua/plugins/myplug.lua`
+  </Step>
+
+  <Step title="Define Plugin Spec">
+    ```lua
+    return {
+      "author/plugin-name",
+      opts = {
+        -- plugin configuration
+      },
+    }
+    ```
+  </Step>
+
+  <Step title="Restart Neovim">
+    The plugin will be automatically detected and installed on next launch.
+  </Step>
+</Steps>
+
+### Disabling Plugins
+
+To disable a LazyVim default plugin, add to any plugin file:
+
+```lua
+{ "plugin-name", enabled = false }
+```
+
+## References
+
+- [LazyVim Plugin Documentation](https://www.lazyvim.org/plugins)
+- [lazy.nvim Plugin Spec](https://github.com/folke/lazy.nvim#-plugin-spec)
+- [LazyVim Default Plugins](https://github.com/LazyVim/LazyVim/tree/main/lua/lazyvim/plugins)

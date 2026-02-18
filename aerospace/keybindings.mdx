@@ -1,0 +1,225 @@
+---
+title: 'Keybindings'
+description: 'Complete keyboard shortcut reference for AeroSpace window manager'
+---
+
+## Binding Modes
+
+AeroSpace uses binding modes to organize keybindings. There are two modes in this configuration:
+
+- **main mode**: Default mode for everyday window management
+- **service mode**: Advanced mode for special operations (enter with `Alt + Shift + ;`)
+
+## Main Mode Keybindings
+
+All keybindings in main mode use the `Alt` key as the primary modifier.
+
+### Window Focus Navigation
+
+Navigate between windows using Vim-style directional keys:
+
+| Keybinding | Action | Command |
+|------------|--------|----------|
+| `Alt + H` | Focus left window | `focus left` |
+| `Alt + J` | Focus down window | `focus down` |
+| `Alt + K` | Focus up window | `focus up` |
+| `Alt + L` | Focus right window | `focus right` |
+
+### Window Movement
+
+Move windows around in the current workspace:
+
+| Keybinding | Action | Command |
+|------------|--------|----------|
+| `Alt + Shift + H` | Move window left | `move left` |
+| `Alt + Shift + J` | Move window down | `move down` |
+| `Alt + Shift + K` | Move window up | `move up` |
+| `Alt + Shift + L` | Move window right | `move right` |
+
+### Window Resizing
+
+| Keybinding | Action | Command |
+|------------|--------|----------|
+| `Alt + Shift + -` | Decrease window size | `resize smart -50` |
+| `Alt + Shift + =` | Increase window size | `resize smart +50` |
+
+The `smart` resize mode automatically determines the best direction to resize based on the window's position in the layout.
+
+### Layout Switching
+
+Toggle between different layout modes:
+
+| Keybinding | Action | Command |
+|------------|--------|----------|
+| `Alt + /` | Toggle tiles layout (horizontal/vertical) | `layout tiles horizontal vertical` |
+| `Alt + ,` | Toggle accordion layout (horizontal/vertical) | `layout accordion horizontal vertical` |
+
+### Workspace Switching
+
+<AccordionGroup>
+  <Accordion title="Numeric Workspaces (1-9)">
+    | Keybinding | Workspace |
+    |------------|----------|
+    | `Alt + 1` | Workspace 1 |
+    | `Alt + 2` | Workspace 2 |
+    | `Alt + 3` | Workspace 3 |
+    | `Alt + 4` | Workspace 4 |
+    | `Alt + 5` | Workspace 5 |
+    | `Alt + 6` | Workspace 6 |
+    | `Alt + 7` | Workspace 7 |
+    | `Alt + 8` | Workspace 8 |
+    | `Alt + 9` | Workspace 9 |
+  </Accordion>
+  
+  <Accordion title="Letter Workspaces (A-Z)">
+    | Keybinding | Workspace |
+    |------------|----------|
+    | `Alt + A` | Workspace A |
+    | `Alt + B` | Workspace B |
+    | `Alt + C` | Workspace C |
+    | `Alt + D` | Workspace D |
+    | `Alt + E` | Workspace E |
+    | `Alt + F` | Workspace F |
+    | `Alt + G` | Workspace G |
+    | `Alt + I` | Workspace I |
+    | `Alt + M` | Workspace M |
+    | `Alt + N` | Workspace N |
+    | `Alt + O` | Workspace O |
+    | `Alt + P` | Workspace P |
+    | `Alt + Q` | Workspace Q |
+    | `Alt + R` | Workspace R |
+    | `Alt + S` | Workspace S |
+    | `Alt + T` | Workspace T |
+    | `Alt + U` | Workspace U |
+    | `Alt + V` | Workspace V |
+    | `Alt + W` | Workspace W |
+    | `Alt + X` | Workspace X |
+    | `Alt + Y` | Workspace Y |
+    | `Alt + Z` | Workspace Z |
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+  You can customize your configuration to use only the workspaces you need. The configuration includes all letters except H, K, L (used for navigation).
+</Note>
+
+### Moving Windows to Workspaces
+
+<AccordionGroup>
+  <Accordion title="Move to Numeric Workspaces (1-9)">
+    | Keybinding | Action |
+    |------------|--------|
+    | `Alt + Shift + 1` | Move window to Workspace 1 |
+    | `Alt + Shift + 2` | Move window to Workspace 2 |
+    | `Alt + Shift + 3` | Move window to Workspace 3 |
+    | `Alt + Shift + 4` | Move window to Workspace 4 |
+    | `Alt + Shift + 5` | Move window to Workspace 5 |
+    | `Alt + Shift + 6` | Move window to Workspace 6 |
+    | `Alt + Shift + 7` | Move window to Workspace 7 |
+    | `Alt + Shift + 8` | Move window to Workspace 8 |
+    | `Alt + Shift + 9` | Move window to Workspace 9 |
+  </Accordion>
+  
+  <Accordion title="Move to Letter Workspaces (A-Z)">
+    | Keybinding | Action |
+    |------------|--------|
+    | `Alt + Shift + A` | Move window to Workspace A |
+    | `Alt + Shift + B` | Move window to Workspace B |
+    | `Alt + Shift + C` | Move window to Workspace C |
+    | `Alt + Shift + D` | Move window to Workspace D |
+    | `Alt + Shift + E` | Move window to Workspace E |
+    | `Alt + Shift + F` | Move window to Workspace F |
+    | `Alt + Shift + G` | Move window to Workspace G |
+    | `Alt + Shift + I` | Move window to Workspace I |
+    | `Alt + Shift + M` | Move window to Workspace M |
+    | `Alt + Shift + N` | Move window to Workspace N |
+    | `Alt + Shift + O` | Move window to Workspace O |
+    | `Alt + Shift + P` | Move window to Workspace P |
+    | `Alt + Shift + Q` | Move window to Workspace Q |
+    | `Alt + Shift + R` | Move window to Workspace R |
+    | `Alt + Shift + S` | Move window to Workspace S |
+    | `Alt + Shift + T` | Move window to Workspace T |
+    | `Alt + Shift + U` | Move window to Workspace U |
+    | `Alt + Shift + V` | Move window to Workspace V |
+    | `Alt + Shift + W` | Move window to Workspace W |
+    | `Alt + Shift + X` | Move window to Workspace X |
+    | `Alt + Shift + Y` | Move window to Workspace Y |
+    | `Alt + Shift + Z` | Move window to Workspace Z |
+  </Accordion>
+</AccordionGroup>
+
+### Workspace Management
+
+| Keybinding | Action | Command |
+|------------|--------|----------|
+| `Alt + Tab` | Switch to previous workspace | `workspace-back-and-forth` |
+| `Alt + Shift + Tab` | Move workspace to next monitor | `move-workspace-to-monitor --wrap-around next` |
+
+### Entering Service Mode
+
+| Keybinding | Action | Command |
+|------------|--------|----------|
+| `Alt + Shift + ;` | Enter service mode | `mode service` |
+
+## Service Mode Keybindings
+
+<Note>
+  Service mode is for advanced operations. All service mode commands automatically return you to main mode after execution.
+</Note>
+
+Enter service mode with `Alt + Shift + ;`, then use these keys:
+
+### Layout Operations
+
+| Keybinding | Action | Command |
+|------------|--------|----------|
+| `Esc` | Reload config and exit to main mode | `reload-config`, `mode main` |
+| `R` | Reset layout (flatten workspace tree) | `flatten-workspace-tree`, `mode main` |
+| `F` | Toggle floating/tiling layout | `layout floating tiling`, `mode main` |
+| `Backspace` | Close all windows except current | `close-all-windows-but-current`, `mode main` |
+
+### Window Joining
+
+Join windows with adjacent windows to create containers:
+
+| Keybinding | Action | Command |
+|------------|--------|----------|
+| `Alt + Shift + H` | Join with left window | `join-with left`, `mode main` |
+| `Alt + Shift + J` | Join with down window | `join-with down`, `mode main` |
+| `Alt + Shift + K` | Join with up window | `join-with up`, `mode main` |
+| `Alt + Shift + L` | Join with right window | `join-with right`, `mode main` |
+
+<Note>
+  The `join-with` command is useful for creating window containers and managing complex layouts. After joining, windows will be grouped together and can be managed as a single unit.
+</Note>
+
+## Key Modifiers
+
+AeroSpace supports the following modifier keys:
+
+- `cmd` - Command key
+- `alt` - Option/Alt key (primary modifier in this config)
+- `ctrl` - Control key
+- `shift` - Shift key
+
+## Available Keys
+
+You can customize keybindings using these keys:
+
+- **Letters**: a-z
+- **Numbers**: 0-9
+- **Keypad numbers**: keypad0-keypad9
+- **F-keys**: f1-f20
+- **Special keys**: minus, equal, period, comma, slash, backslash, quote, semicolon, backtick, leftSquareBracket, rightSquareBracket, space, enter, esc, backspace, tab
+- **Keypad special**: keypadClear, keypadDecimalMark, keypadDivide, keypadEnter, keypadEqual, keypadMinus, keypadMultiply, keypadPlus
+- **Arrows**: left, down, up, right
+
+## Customization
+
+To customize keybindings:
+
+1. Edit your `~/.aerospace.toml` file
+2. Modify bindings in the `[mode.main.binding]` or `[mode.service.binding]` sections
+3. Reload the configuration by entering service mode and pressing `Esc`
+
+For more information on available commands, see the [official AeroSpace commands documentation](https://nikitabobko.github.io/AeroSpace/commands).

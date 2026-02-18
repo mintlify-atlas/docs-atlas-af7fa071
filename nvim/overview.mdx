@@ -1,0 +1,194 @@
+---
+title: 'Neovim Configuration Overview'
+description: 'LazyVim-based Neovim configuration with custom plugins and settings'
+---
+
+## Introduction
+
+This Neovim configuration is built on top of [LazyVim](https://www.lazyvim.org/), a modern Neovim distribution that provides sensible defaults, a plugin manager, and an extensible configuration structure. LazyVim uses [lazy.nvim](https://github.com/folke/lazy.nvim) as its plugin manager, enabling fast startup times through lazy-loading.
+
+<Info>
+  LazyVim comes pre-configured with LSP support, treesitter, autocompletion, and many other essential features for modern development.
+</Info>
+
+## Directory Structure
+
+The configuration follows LazyVim's standard directory structure:
+
+```
+nvim/
+├── init.lua                 # Entry point that bootstraps lazy.nvim
+├── lua/
+│   ├── config/             # Core configuration files
+│   │   ├── lazy.lua        # Lazy.nvim plugin manager setup
+│   │   ├── options.lua     # Vim options and settings
+│   │   ├── keymaps.lua     # Custom keybindings
+│   │   └── autocmds.lua    # Auto commands
+│   └── plugins/            # Plugin specifications
+│       ├── colorscheme.lua
+│       ├── leetcode.lua
+│       ├── obsidian.lua
+│       ├── tab-complete.lua
+│       ├── snacks-config.lua
+│       ├── vimbegood.lua
+│       └── mason-workaround.lua
+├── lazyvim.json            # LazyVim extras configuration
+└── lazy-lock.json          # Plugin version lockfile
+```
+
+### How the Config is Organized
+
+<Accordion title="init.lua - Bootstrap">
+  The entry point is minimal and simply bootstraps the configuration:
+
+  ```lua
+  -- bootstrap lazy.nvim, LazyVim and your plugins
+  require("config.lazy")
+  ```
+
+  This file loads the lazy.nvim plugin manager, which then loads all other configuration files.
+</Accordion>
+
+<Accordion title="lua/config/ - Core Configuration">
+  The `config` directory contains core configuration files:
+
+  - **lazy.lua**: Sets up the lazy.nvim plugin manager, configures plugin loading behavior, and defines performance optimizations
+  - **options.lua**: Contains Vim options and global settings
+  - **keymaps.lua**: Custom keybindings (currently uses LazyVim defaults)
+  - **autocmds.lua**: Auto commands for automatic actions on events
+</Accordion>
+
+<Accordion title="lua/plugins/ - Plugin Specifications">
+  Each `.lua` file in the plugins directory returns a table (or array of tables) with plugin specifications. These files are automatically loaded by lazy.nvim.
+
+  All plugins in this directory extend or override LazyVim's default plugin configuration.
+</Accordion>
+
+## Lazy.nvim Setup
+
+The plugin manager is configured with the following key settings:
+
+```lua lua/config/lazy.lua
+require("lazy").setup({
+  spec = {
+    -- add LazyVim and import its plugins
+    { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    -- import/override with your plugins
+    { import = "plugins" },
+  },
+  defaults = {
+    lazy = false,  -- Custom plugins load during startup
+    version = false,  -- Always use latest git commit
+  },
+  install = { colorscheme = { "tokyonight", "habamax" } },
+  checker = {
+    enabled = true,  -- Check for plugin updates periodically
+    notify = false,  -- Don't notify on update
+  },
+  performance = {
+    rtp = {
+      -- Disable some default vim plugins for better performance
+      disabled_plugins = {
+        "gzip",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
+})
+```
+
+<Note>
+  The configuration automatically checks for plugin updates but doesn't notify to avoid interruptions during coding.
+</Note>
+
+## Key Settings
+
+### Options (lua/config/options.lua)
+
+The configuration includes minimal custom options, relying mostly on LazyVim's sensible defaults:
+
+```lua lua/config/options.lua
+-- Set root directory detection to current working directory
+vim.g.root_spec = { "cwd" }
+```
+
+<Info>
+  By default, LazyVim detects the project root using `.git`, LSP workspace folders, or patterns like `package.json`. This setting overrides that behavior to use the current working directory instead.
+</Info>
+
+### Auto Commands (lua/config/autocmds.lua)
+
+Custom visual selection highlighting:
+
+```lua lua/config/autocmds.lua
+-- Custom yellow visual selection with black text
+vim.api.nvim_set_hl(0, "Visual", { bg = "#ffff00", fg = "#000000" })
+```
+
+This provides high-contrast yellow highlighting for visual selections.
+
+## LazyVim Extras
+
+The configuration enables several LazyVim "extras" - pre-configured plugin bundles for specific languages and features:
+
+```json lazyvim.json
+{
+  "extras": [
+    "lazyvim.plugins.extras.ai.copilot-chat",
+    "lazyvim.plugins.extras.coding.nvim-cmp",
+    "lazyvim.plugins.extras.lang.clangd",
+    "lazyvim.plugins.extras.lang.go",
+    "lazyvim.plugins.extras.lang.json",
+    "lazyvim.plugins.extras.lang.python",
+    "lazyvim.plugins.extras.lang.tailwind",
+    "lazyvim.plugins.extras.lang.typescript"
+  ]
+}
+```
+
+### Enabled Language Support
+
+- **C/C++**: Full LSP support via clangd
+- **Go**: Complete Go development environment
+- **Python**: Python LSP, linting, and formatting
+- **TypeScript/JavaScript**: Full TypeScript support with proper LSP configuration
+- **JSON**: Enhanced JSON editing with schema support
+- **Tailwind CSS**: Tailwind CSS IntelliSense
+
+### AI Features
+
+- **GitHub Copilot Chat**: Integrated AI pair programming with chat interface
+
+### Coding Features
+
+- **nvim-cmp**: Advanced autocompletion framework (configured via extras)
+
+## Getting Started
+
+<Steps>
+  <Step title="First Launch">
+    On first launch, lazy.nvim will automatically install all configured plugins. This may take a few minutes.
+  </Step>
+
+  <Step title="View Plugin Status">
+    Press `<leader>l` (space + l by default) to open the lazy.nvim interface and see all installed plugins.
+  </Step>
+
+  <Step title="Check Health">
+    Run `:checkhealth` to verify that all dependencies are properly installed.
+  </Step>
+
+  <Step title="Update Plugins">
+    Press `<leader>l` then `U` to update all plugins to their latest versions.
+  </Step>
+</Steps>
+
+## References
+
+- [LazyVim Documentation](https://www.lazyvim.org/)
+- [lazy.nvim Plugin Manager](https://github.com/folke/lazy.nvim)
+- [LazyVim Default Options](https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua)
+- [LazyVim Default Keymaps](https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua)

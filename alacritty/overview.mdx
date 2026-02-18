@@ -1,0 +1,184 @@
+---
+title: 'Alacritty Configuration'
+description: 'Overview of Alacritty terminal emulator configuration'
+---
+
+## Introduction
+
+Alacritty is a modern, GPU-accelerated terminal emulator focused on performance and simplicity. This configuration provides a clean, customizable setup with transparent backgrounds, custom fonts, and an extensive theme system.
+
+## Main Configuration
+
+The primary configuration file is `alacritty.toml`, which defines window settings, fonts, environment variables, and theme imports.
+
+### Configuration Structure
+
+```toml alacritty.toml
+general.import = [
+    "~/.config/alacritty/themes/themes/coolnight.toml"
+]
+
+[ env ]
+TERM = "xterm-256color"
+
+[window]
+padding.x = 10
+padding.y = 10
+
+decorations = "Buttonless"
+opacity = 0.8
+blur = true
+startup_mode = "Maximized"
+
+[font]
+normal.family = "0xProto Nerd Font Mono"
+size = 16
+```
+
+## Window Settings
+
+The window configuration creates a modern, distraction-free terminal experience:
+
+<Steps>
+  <Step title="Padding">
+    10px padding on both X and Y axes provides breathing room around terminal content:
+    ```toml
+    padding.x = 10
+    padding.y = 10
+    ```
+  </Step>
+
+  <Step title="Decorations">
+    Buttonless mode removes standard window buttons for a cleaner look:
+    ```toml
+    decorations = "Buttonless"
+    ```
+  </Step>
+
+  <Step title="Transparency & Blur">
+    80% opacity with blur enabled creates a modern, translucent effect:
+    ```toml
+    opacity = 0.8
+    blur = true
+    ```
+  </Step>
+
+  <Step title="Startup Mode">
+    Terminal launches in maximized mode by default:
+    ```toml
+    startup_mode = "Maximized"
+    ```
+  </Step>
+</Steps>
+
+## Font Configuration
+
+The configuration uses **0xProto Nerd Font Mono** at 16pt for optimal readability and icon support.
+
+```toml
+[font]
+normal.family = "0xProto Nerd Font Mono"
+size = 16
+```
+
+<Tip>
+  **Nerd Fonts** include thousands of glyphs and icons from popular collections like Font Awesome, Devicons, Octicons, and more. This makes them perfect for modern terminal applications and shell prompts.
+</Tip>
+
+### Why 0xProto Nerd Font?
+
+- **Clear & Readable**: Designed specifically for programming
+- **Icon Support**: Includes all Nerd Font glyphs for shell prompts and file managers
+- **Ligature Support**: Clean rendering of programming ligatures
+- **Size**: 16pt provides comfortable reading without eye strain
+
+## Environment Variables
+
+The configuration sets the `TERM` environment variable to ensure proper color support:
+
+```toml
+[ env ]
+TERM = "xterm-256color"
+```
+
+This enables:
+- Full 256-color palette support
+- Proper color rendering in terminal applications
+- Compatibility with modern CLI tools and TUIs
+
+## Theme System
+
+Alacritty uses a modular theme system through the `general.import` directive:
+
+```toml
+general.import = [
+    "~/.config/alacritty/themes/themes/coolnight.toml"
+]
+```
+
+**Current Theme**: `coolnight.toml` - A dark blue theme inspired by Aura, featuring:
+- Deep blue background (`#011423`)
+- Bright cyan and green accents
+- Excellent contrast for long coding sessions
+- Purple and blue highlights
+
+<CardGroup cols={2}>
+  <Card title="Browse Themes" icon="palette" href="/alacritty/themes">
+    Explore the 151 available themes and learn how to switch between them
+  </Card>
+  <Card title="Theme Details" icon="swatchbook">
+    The coolnight theme by Josean Martinez features vibrant colors perfect for dark environments
+  </Card>
+</CardGroup>
+
+## Quick Configuration Tips
+
+<AccordionGroup>
+  <Accordion title="Adjust transparency">
+    Change the `opacity` value in the `[window]` section:
+    ```toml
+    opacity = 0.9  # More opaque
+    opacity = 0.7  # More transparent
+    ```
+  </Accordion>
+
+  <Accordion title="Change font size">
+    Modify the `size` value in the `[font]` section:
+    ```toml
+    size = 14  # Smaller
+    size = 18  # Larger
+    ```
+  </Accordion>
+
+  <Accordion title="Disable blur effect">
+    Set `blur` to false if performance is an issue:
+    ```toml
+    blur = false
+    ```
+  </Accordion>
+
+  <Accordion title="Change startup mode">
+    Options include: `"Windowed"`, `"Maximized"`, `"Fullscreen"`, `"SimpleFullscreen"`:
+    ```toml
+    startup_mode = "Windowed"
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## File Structure
+
+```
+~/.config/alacritty/
+├── alacritty.toml              # Main configuration
+└── themes/
+    ├── themes/                 # 151 theme files
+    │   ├── coolnight.toml      # Current theme
+    │   ├── tokyo_night.toml
+    │   ├── gruvbox_dark.toml
+    │   └── ...
+    └── print_colors.sh         # Color preview script
+```
+
+<Tip>
+  After making changes to `alacritty.toml`, Alacritty automatically reloads the configuration - no restart needed!
+</Tip>

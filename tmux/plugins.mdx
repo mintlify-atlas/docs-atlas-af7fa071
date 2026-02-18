@@ -1,0 +1,161 @@
+---
+title: 'Tmux Plugins'
+description: 'Plugin management with TPM and theme customization with Catppuccin'
+---
+
+## Plugin Manager
+
+This configuration uses **TPM (Tmux Plugin Manager)** to manage plugins:
+
+```bash
+set -g @plugin 'tmux-plugins/tpm'
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+## Installing TPM
+
+<Steps>
+  <Step title="Clone TPM repository">
+    ```bash
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    ```
+  </Step>
+
+  <Step title="Copy configuration">
+    Copy the `tmux.conf` file to your home directory:
+    ```bash
+    cp tmux.conf ~/.tmux.conf
+    ```
+  </Step>
+
+  <Step title="Start tmux">
+    ```bash
+    tmux
+    ```
+  </Step>
+
+  <Step title="Install plugins">
+    Press `Ctrl+Space` + `I` (capital i) to fetch and install all plugins.
+  </Step>
+</Steps>
+
+<Note>
+  If tmux is already running, reload the configuration with: `tmux source ~/.tmux.conf`
+</Note>
+
+## Catppuccin Theme
+
+The configuration uses the Catppuccin theme from **dreamsofcode-io**:
+
+```bash
+set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+```
+
+This provides a beautiful, modern color scheme for the tmux status bar and panes.
+
+### About Catppuccin
+
+Catppuccin is a soothing pastel theme with four flavor variants:
+- Latte (light)
+- Frappe (dark)
+- Macchiato (darker)
+- Mocha (darkest)
+
+The dreamsofcode-io fork provides tmux-specific optimizations and integrations.
+
+## Plugin Management Commands
+
+TPM provides several key bindings for plugin management:
+
+| Keybinding | Action |
+|------------|--------|
+| `Prefix` + `I` | Install new plugins (capital i) |
+| `Prefix` + `U` | Update plugins |
+| `Prefix` + `alt` + `u` | Uninstall plugins not in config |
+
+<Note>
+  Remember: `Prefix` is `Ctrl+Space` in this configuration, not the default `Ctrl+b`.
+</Note>
+
+## Adding More Plugins
+
+To add additional plugins:
+
+<Steps>
+  <Step title="Add plugin line">
+    Add the plugin to your `~/.tmux.conf`:
+    ```bash
+    set -g @plugin 'github-username/plugin-name'
+    ```
+  </Step>
+
+  <Step title="Reload configuration">
+    ```bash
+    tmux source ~/.tmux.conf
+    ```
+  </Step>
+
+  <Step title="Install the plugin">
+    Press `Ctrl+Space` + `I` to install the new plugin.
+  </Step>
+</Steps>
+
+## Available Plugins
+
+Some popular tmux plugins to consider:
+
+- **tmux-sensible**: Basic tmux settings everyone can agree on
+- **tmux-resurrect**: Restore tmux environment after system restart
+- **tmux-continuum**: Continuous saving of tmux environment
+- **tmux-yank**: Advanced copy/paste integration
+- **tmux-open**: Open highlighted selection in browser or editor
+
+## Copy Mode Integration
+
+The vi-mode keybindings work seamlessly with the plugin setup:
+
+```bash
+# Enter copy mode with Prefix+[
+bind-key [ copy-mode
+
+# Vim-like navigation in copy mode
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+```
+
+**Quick reference:**
+- `Ctrl+Space` + `[` - Enter copy mode
+- `v` - Start visual selection
+- `y` - Yank (copy) selection
+- `V` - Toggle rectangular selection
+- `q` or `Escape` - Exit copy mode
+
+## Troubleshooting
+
+### Plugins not loading
+
+If plugins don't load after installation:
+
+1. Ensure TPM is installed: `ls ~/.tmux/plugins/tpm`
+2. Reload tmux configuration: `tmux source ~/.tmux.conf`
+3. Kill and restart tmux: `tmux kill-server && tmux`
+
+### Colors not displaying correctly
+
+Ensure your terminal emulator supports true color:
+
+```bash
+# Test true color support
+printf "\x1b[38;2;255;100;0mTRUECOLOR\x1b[0m\n"
+```
+
+If colors don't display, check your terminal's true color settings.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Overview" icon="house" href="/tmux/overview">
+    Back to tmux configuration overview
+  </Card>
+</CardGroup>

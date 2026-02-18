@@ -1,0 +1,143 @@
+---
+title: Introduction
+description: Welcome to yangleyland/configs - A curated collection of dotfiles for a powerful development environment
+---
+
+<img
+  className="block dark:hidden"
+  src="/images/hero-light.svg"
+  alt="Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/hero-dark.svg"
+  alt="Hero Dark"
+/>
+
+## Welcome to yangleyland/configs
+
+A meticulously crafted collection of configuration files designed to supercharge your development workflow on macOS. This repository brings together the best tools and customizations for terminal-based development.
+
+## What's Included
+
+This dotfiles repository provides complete configurations for your entire development environment:
+
+<CardGroup cols={2}>
+  <Card
+    title="Neovim with LazyVim"
+    icon="code"
+    href="/nvim/overview"
+  >
+    A powerful Neovim setup built on LazyVim with custom plugins for Obsidian integration, LeetCode practice, and multiple colorschemes
+  </Card>
+  <Card
+    title="Tmux Configuration"
+    icon="terminal"
+    href="/tmux/overview"
+  >
+    Terminal multiplexer with Catppuccin theme, Vim keybindings, and optimized for modern workflows
+  </Card>
+  <Card
+    title="Alacritty Terminal"
+    icon="window-maximize"
+    href="/alacritty/overview"
+  >
+    GPU-accelerated terminal emulator with 151+ themes and custom font configuration
+  </Card>
+  <Card
+    title="AeroSpace Window Manager"
+    icon="grid"
+    href="/aerospace/overview"
+  >
+    Tiling window manager for macOS with extensive workspace and navigation keybindings
+  </Card>
+</CardGroup>
+
+## Key Features
+
+### Neovim Configuration
+- **LazyVim Foundation**: Built on the popular LazyVim starter template for quick setup
+- **Plugin Ecosystem**: 
+  - Obsidian.nvim for seamless note-taking integration
+  - LeetCode.nvim for practicing coding problems
+  - Custom tab completion enhancements
+  - VimBeGood for improving Vim skills
+- **Multiple Colorschemes**: Choose from Kanagawa, PaperColor, Gruvbox, Rose Pine, TokyoDark, Everforest, and OneDark
+- **Optimized Options**: Custom root directory handling and performance tweaks
+
+### Tmux Setup
+- **Catppuccin Theme**: Beautiful, modern theme from dreamsofcode-io
+- **Vim Keybindings**: Navigate copy mode with familiar Vim motions
+- **Custom Prefix**: Changed from `Ctrl+b` to `Ctrl+Space` for easier access
+- **True Color Support**: Full 256-color and RGB color support
+- **Mouse Support**: Enabled for easier window management
+- **Window Renumbering**: Automatically renumber windows starting from 1
+
+### Alacritty Configuration
+- **151 Themes**: Extensive theme collection including Tokyo Night, Nord, Catppuccin, Solarized, and many more
+- **0xProto Nerd Font**: Monospace font with icon support
+- **Modern UI**: 
+  - Buttonless window decorations
+  - 80% opacity with blur effect
+  - Maximized startup mode
+  - Custom padding (10px)
+- **True Color Terminal**: Full xterm-256color support
+
+### AeroSpace Window Manager
+- **Tiling Layout**: Automatic window tiling with tiles and accordion modes
+- **Extensive Workspaces**: Support for 9 numbered workspaces plus A-Z named workspaces
+- **Vim-like Navigation**: 
+  - `Alt+h/j/k/l` for focus movement
+  - `Alt+Shift+h/j/k/l` for moving windows
+- **Smart Window Management**:
+  - Mouse follows focus automatically
+  - Window resizing with `Alt+Shift+-/=`
+  - Layout toggling between tiles and accordion
+  - Service mode for advanced operations
+- **Zero Gaps Configuration**: Clean, edge-to-edge window layout
+
+## Why These Tools?
+
+<AccordionGroup>
+  <Accordion title="Neovim + LazyVim">
+    Neovim is a hyperextensible Vim-based text editor with modern features like LSP support, tree-sitter integration, and Lua configuration. LazyVim provides a solid foundation with sensible defaults and a lazy-loading plugin manager for optimal performance.
+  </Accordion>
+  
+  <Accordion title="Tmux">
+    Tmux allows you to manage multiple terminal sessions in a single window, perfect for organizing your workflow into separate panes and windows. It's essential for remote work and maintaining persistent sessions.
+  </Accordion>
+  
+  <Accordion title="Alacritty">
+    Alacritty is the fastest terminal emulator available, leveraging GPU acceleration for smooth rendering. Its TOML-based configuration makes theming and customization straightforward.
+  </Accordion>
+  
+  <Accordion title="AeroSpace">
+    AeroSpace brings i3-like tiling window management to macOS. It's lightweight, highly configurable, and integrates seamlessly with macOS while providing powerful keyboard-driven window control.
+  </Accordion>
+</AccordionGroup>
+
+## Quick Start
+
+Ready to set up your development environment? Head over to the [Installation Guide](/installation) to get started.
+
+<Card
+  title="Installation Guide"
+  icon="rocket"
+  href="/installation"
+>
+  Step-by-step instructions to install and configure all tools
+</Card>
+
+## Philosophy
+
+These configurations are designed around several core principles:
+
+- **Keyboard-First**: Minimize mouse usage with comprehensive keybindings
+- **Performance**: Fast startup times and responsive interactions
+- **Aesthetics**: Beautiful themes that are easy on the eyes during long coding sessions
+- **Extensibility**: Easy to customize and extend based on your needs
+- **Consistency**: Unified keybindings and color schemes across all tools
+
+<Note>
+  These configurations are optimized for macOS. Some features may require adaptation for Linux or Windows environments.
+</Note>

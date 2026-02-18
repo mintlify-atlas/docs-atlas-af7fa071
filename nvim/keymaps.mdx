@@ -1,0 +1,334 @@
+---
+title: 'Keybindings'
+description: 'Default LazyVim keymaps and custom keybindings'
+---
+
+## Overview
+
+This configuration uses LazyVim's default keymaps with no custom overrides in `lua/config/keymaps.lua`. All keybindings come from LazyVim's sensible defaults.
+
+<Info>
+  The leader key is set to **Space** by default in LazyVim.
+</Info>
+
+## Custom Keymaps
+
+The `lua/config/keymaps.lua` file currently has no custom keybindings:
+
+```lua lua/config/keymaps.lua
+-- Keymaps are automatically loaded on the VeryLazy event
+-- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add any additional keymaps here
+```
+
+To add custom keymaps, add them to this file using:
+
+```lua
+vim.keymap.set("n", "<leader>cc", "<cmd>:echo 'Custom command'<cr>", { desc = "Custom Command" })
+```
+
+## LazyVim Default Keymaps
+
+LazyVim provides extensive default keybindings. Here are the most important ones organized by category:
+
+### General
+
+<AccordionGroup>
+  <Accordion title="Basic Navigation">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<C-h>` | n | Go to left window |
+    | `<C-j>` | n | Go to lower window |
+    | `<C-k>` | n | Go to upper window |
+    | `<C-l>` | n | Go to right window |
+    | `<C-Up>` | n | Increase window height |
+    | `<C-Down>` | n | Decrease window height |
+    | `<C-Left>` | n | Decrease window width |
+    | `<C-Right>` | n | Increase window width |
+  </Accordion>
+
+  <Accordion title="Buffer Management">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<S-h>` | n | Previous buffer |
+    | `<S-l>` | n | Next buffer |
+    | `[b` | n | Previous buffer |
+    | `]b` | n | Next buffer |
+    | `<leader>bb` | n | Switch to other buffer |
+    | `<leader>bd` | n | Delete buffer |
+    | `<leader>bD` | n | Delete buffer and window |
+  </Accordion>
+
+  <Accordion title="Tab Management">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<leader><tab>l` | n | Last tab |
+    | `<leader><tab>f` | n | First tab |
+    | `<leader><tab><tab>` | n | New tab |
+    | `<leader><tab>]` | n | Next tab |
+    | `<leader><tab>[` | n | Previous tab |
+    | `<leader><tab>d` | n | Close tab |
+  </Accordion>
+</AccordionGroup>
+
+### File Operations
+
+<AccordionGroup>
+  <Accordion title="File Navigation & Search">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<leader><space>` | n | Find files (root dir) |
+    | `<leader>ff` | n | Find files (root dir) |
+    | `<leader>fF` | n | Find files (cwd) |
+    | `<leader>fr` | n | Recent files |
+    | `<leader>fR` | n | Recent files (cwd) |
+    | `<leader>sg` | n | Grep (root dir) |
+    | `<leader>sG` | n | Grep (cwd) |
+    | `<leader>sw` | n | Word (root dir) |
+    | `<leader>sW` | n | Word (cwd) |
+    | `<leader>fb` | n | Buffers |
+  </Accordion>
+
+  <Accordion title="File Management">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<leader>fn` | n | New file |
+    | `<leader>fs` | n, i, v, x | Save file |
+    | `<leader>qq` | n | Quit all |
+  </Accordion>
+</AccordionGroup>
+
+### Code Editing
+
+<AccordionGroup>
+  <Accordion title="LSP Commands">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `gd` | n | Go to definition |
+    | `gr` | n | Go to references |
+    | `gD` | n | Go to declaration |
+    | `gI` | n | Go to implementation |
+    | `gy` | n | Go to type definition |
+    | `K` | n | Hover documentation |
+    | `gK` | n | Signature help |
+    | `<leader>ca` | n, v | Code action |
+    | `<leader>cr` | n | Rename |
+    | `<leader>cf` | n, v | Format document/range |
+  </Accordion>
+
+  <Accordion title="Diagnostics">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `]d` | n | Next diagnostic |
+    | `[d` | n | Previous diagnostic |
+    | `]e` | n | Next error |
+    | `[e` | n | Previous error |
+    | `]w` | n | Next warning |
+    | `[w` | n | Previous warning |
+    | `<leader>cd` | n | Line diagnostics |
+    | `<leader>xx` | n | Trouble diagnostics |
+    | `<leader>xX` | n | Buffer diagnostics |
+  </Accordion>
+
+  <Accordion title="Code Navigation">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `]]` | n | Next reference |
+    | `[[` | n | Previous reference |
+    | `]f` | n | Next function |
+    | `[f` | n | Previous function |
+    | `]c` | n | Next class |
+    | `[c` | n | Previous class |
+  </Accordion>
+</AccordionGroup>
+
+### Terminal
+
+<Accordion title="Terminal Management">
+  | Key | Mode | Description |
+  |-----|------|-------------|
+  | `<C-/>` | n | Terminal (root dir) |
+  | `<C-_>` | n | Terminal (root dir) (which key) |
+  | `<leader>ft` | n | Terminal (root dir) |
+  | `<leader>fT` | n | Terminal (cwd) |
+  | `<C-/>` | t | Hide terminal |
+  | `<Esc><Esc>` | t | Enter normal mode |
+</Accordion>
+
+### UI Toggles
+
+<AccordionGroup>
+  <Accordion title="UI Components">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<leader>uf` | n | Toggle format on save |
+    | `<leader>us` | n | Toggle spelling |
+    | `<leader>uw` | n | Toggle word wrap |
+    | `<leader>ul` | n | Toggle line numbers |
+    | `<leader>ud` | n | Toggle diagnostics |
+    | `<leader>uc` | n | Toggle conceal |
+    | `<leader>uh` | n | Toggle inlay hints |
+  </Accordion>
+
+  <Accordion title="Editor Features">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<leader>e` | n | Explorer (root dir) |
+    | `<leader>E` | n | Explorer (cwd) |
+    | `<leader>l` | n | Lazy (plugin manager) |
+    | `<leader>cm` | n | Mason (LSP manager) |
+  </Accordion>
+</AccordionGroup>
+
+### Search & Replace
+
+<Accordion title="Search Commands">
+  | Key | Mode | Description |
+  |-----|------|-------------|
+  | `<leader>ss` | n | Search symbols |
+  | `<leader>sC` | n | Commands |
+  | `<leader>sk` | n | Key maps |
+  | `<leader>sh` | n | Help pages |
+  | `<leader>sm` | n | Man pages |
+  | `<leader>sr` | n | Replace in files (Spectre) |
+  | `n` | n, x, o | Next search result |
+  | `N` | n, x, o | Previous search result |
+</Accordion>
+
+### Git Integration
+
+<AccordionGroup>
+  <Accordion title="Git Commands">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<leader>gg` | n | Lazygit (root dir) |
+    | `<leader>gG` | n | Lazygit (cwd) |
+    | `<leader>gb` | n | Git blame line |
+    | `<leader>gB` | n | Git browse |
+    | `<leader>gf` | n | Lazygit file history |
+  </Accordion>
+
+  <Accordion title="Hunk Operations">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `]h` | n | Next hunk |
+    | `[h` | n | Previous hunk |
+    | `<leader>ghp` | n | Preview hunk |
+    | `<leader>ghr` | n | Reset hunk |
+    | `<leader>ghs` | n | Stage hunk |
+    | `<leader>ghu` | n | Undo stage hunk |
+  </Accordion>
+</AccordionGroup>
+
+### Text Editing
+
+<AccordionGroup>
+  <Accordion title="Line Manipulation">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<A-j>` | n, i, v | Move line down |
+    | `<A-k>` | n, i, v | Move line up |
+    | `J` | v | Move selection down |
+    | `K` | v | Move selection up |
+  </Accordion>
+
+  <Accordion title="Indentation">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<` | v | Decrease indent |
+    | `>` | v | Increase indent |
+  </Accordion>
+
+  <Accordion title="Selection & Clipboard">
+    | Key | Mode | Description |
+    |-----|------|-------------|
+    | `<leader>ur` | n | Toggle relative numbers |
+    | `<Esc>` | n | Clear search highlight |
+    | `gco` | n | Comment line below |
+    | `gcO` | n | Comment line above |
+  </Accordion>
+</AccordionGroup>
+
+## Plugin-Specific Keymaps
+
+Some plugins add their own keybindings:
+
+### GitHub Copilot Chat
+
+<Accordion title="AI Assistant Commands">
+  | Key | Mode | Description |
+  |-----|------|-------------|
+  | `<leader>aa` | n, v | Copilot Chat |
+  | `<leader>ax` | n, v | Clear chat |
+  | `<leader>aq` | n, v | Quick chat |
+</Accordion>
+
+### LeetCode
+
+<Accordion title="Competitive Programming">
+  Use `:Leet` commands:
+  - `:Leet list` - List problems
+  - `:Leet desc` - Show problem description
+  - `:Leet run` - Run test cases
+  - `:Leet submit` - Submit solution
+  - `:Leet test` - Run custom test
+</Accordion>
+
+### Obsidian
+
+<Accordion title="Note-Taking">
+  Default Obsidian.nvim keybindings (when in markdown files):
+  - `gf` - Follow link under cursor
+  - `<leader>of` - Find notes
+  - `<leader>os` - Search notes
+  - `<leader>ot` - Tags
+  - `<leader>on` - New note
+  - `<leader>od` - Daily note
+</Accordion>
+
+## Quick Reference Card
+
+<Note>
+  For the complete list of LazyVim keybindings, press `<leader>sk` to search keymaps or visit the [LazyVim keymaps documentation](https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua).
+</Note>
+
+### Most Used Commands
+
+```
+Leader = Space
+
+<leader><space>  Find files
+<leader>sg       Grep search
+<leader>e        File explorer
+gd               Go to definition
+K                Show documentation
+<leader>ca       Code actions
+<leader>cr       Rename symbol
+<leader>xx       Show diagnostics
+<leader>gg       Open Lazygit
+```
+
+## Adding Custom Keymaps
+
+To add your own keybindings, edit `lua/config/keymaps.lua`:
+
+```lua
+-- Normal mode keymap
+vim.keymap.set("n", "<leader>cc", "<cmd>:echo 'Hello'<cr>", { desc = "Say Hello" })
+
+-- Visual mode keymap
+vim.keymap.set("v", "<leader>cx", ":s/foo/bar/g<cr>", { desc = "Replace foo with bar" })
+
+-- Multiple modes
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
+```
+
+<Info>
+  Always include a `desc` field in keymaps - it appears in the which-key popup and makes keybindings discoverable.
+</Info>
+
+## References
+
+- [LazyVim Default Keymaps](https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua)
+- [LazyVim Keymaps Documentation](https://www.lazyvim.org/keymaps)
+- [Neovim Keymap API](https://neovim.io/doc/user/api.html#nvim_set_keymap())

@@ -1,0 +1,965 @@
+---
+title: Troubleshooting Guide
+description: Common issues and solutions for Neovim, Tmux, Alacritty, and AeroSpace
+icon: wrench
+---
+
+This guide covers common issues you might encounter with each tool and how to resolve them.
+
+## Neovim Troubleshooting
+
+<Accordion title="Plugins not loading or lazy.nvim errors">
+  **Symptoms:** Plugins don't load, errors about missing modules, or lazy.nvim fails to start.
+
+  **Solutions:**
+
+  1. **Verify lazy.nvim installation:**
+     ```bash
+     ls ~/.local/share/nvim/lazy/lazy.nvim
+     ```
+     If missing, lazy.nvim will auto-install on next Neovim start.
+
+  2. **Clear plugin cache:**
+     ```bash
+     rm -rf ~/.local/share/nvim/lazy
+     nvim  # Reinstalls all plugins
+     ```
+
+  3. **Check for syntax errors in plugin files:**
+     ```bash
+     nvim --headless "+Lazy check" +qa
+     ```
+
+  4. **Update all plugins:**
+     ```vim
+     :Lazy sync
+     ```
+
+  5. **Check logs:**
+     ```vim
+     :Lazy log
+     ```
+
+  <Tip>
+  If a specific plugin causes issues, disable it temporarily by adding `enabled = false` to its configuration.
+  </Tip>
+</Accordion>
+
+<Accordion title="LSP not working or language server errors">
+  **Symptoms:** No autocompletion, diagnostics not showing, "LSP not attached" messages.
+
+  **Solutions:**
+
+  1. **Check LSP status:**
+     ```vim
+     :LspInfo
+     ```
+     Shows attached language servers and their status.
+
+  2. **Install language server via Mason:**
+     ```vim
+     :Mason
+     ```
+     Search for and install the required language server (e.g., `lua_ls`, `tsserver`, `pyright`).
+
+  3. **Check Mason installation path:**
+     ```bash
+     ls ~/.local/share/nvim/mason/bin
+     ```
+
+  4. **Verify LSP configuration:**
+     Check `nvim/lua/plugins/` for LSP config issues.
+
+  5. **Manually restart LSP:**
+     ```vim
+     :LspRestart
+     ```
+
+  6. **Check logs:**
+     ```vim
+     :LspLog
+     ```
+
+  **Common LSP issues by language:**
+
+  - **TypeScript/JavaScript:** Ensure `node` is installed
+     ```bash
+     node --version
+     npm install -g typescript typescript-language-server
+     ```
+
+  - **Python:** Install `pyright`
+     ```bash
+     pip install pyright
+     ```
+
+  - **Rust:** Install `rust-analyzer`
+     ```bash
+     rustup component add rust-analyzer
+     ```
+</Accordion>
+
+<Accordion title="Colorscheme not loading or wrong colors">
+  **Symptoms:** Colors appear incorrect, colorscheme doesn't load, or terminal looks washed out.
+
+  **Solutions:**
+
+  1. **Verify colorscheme is installed:**
+     ```vim
+     :Lazy
+     ```
+     Check if the colorscheme plugin is installed.
+
+  2. **Check terminal color support:**
+     ```bash
+     echo $TERM
+     # Should be "xterm-256color" or "tmux-256color"
+     ```
+
+  3. **Enable true color support:**
+     Add to `nvim/lua/config/options.lua`:
+     ```lua
+     vim.opt.termguicolors = true
+     ```
+
+  4. **Test colorscheme directly:**
+     ```vim
+     :colorscheme onedark
+     ```
+
+  5. **Check for colorscheme conflicts:**
+     Ensure only one colorscheme is set in `nvim/lua/plugins/colorscheme.lua`.
+
+  6. **Verify theme file location:**
+     ```bash
+     ls ~/.local/share/nvim/lazy/
+     ```
+</Accordion>
+
+<Accordion title="Slow startup or performance issues">
+  **Symptoms:** Neovim takes long to start, lags during editing, or freezes.
+
+  **Solutions:**
+
+  1. **Profile startup time:**
+     ```bash
+     nvim --startuptime startup.log
+     cat startup.log | tail -50
+     ```
+
+  2. **Check lazy-loading configuration:**
+     Ensure plugins are lazy-loaded properly in `nvim/lua/config/lazy.lua`.
+
+  3. **Disable plugins temporarily:**
+     ```lua
+     -- In plugin file
+     return {
+       "slow/plugin",
+       enabled = false,
+     }
+     ```
+
+  4. **Update Neovim:**
+     ```bash
+     nvim --version
+     # Update to latest version
+     brew upgrade neovim  # macOS
+     ```
+
+  5. **Check for large files:**
+     LazyVim may struggle with files >1MB. Disable features for large files.
+
+  6. **Optimize treesitter:**
+     ```lua
+     require('nvim-treesitter.configs').setup({
+       highlight = { enable = true },
+       indent = { enable = false },  -- Disable if slow
+     })
+     ```
+</Accordion>
+
+<Accordion title="Keybindings not working">
+  **Symptoms:** Custom keymaps don't respond, or default LazyVim keys are overridden.
+
+  **Solutions:**
+
+  1. **Check keymap conflicts:**
+     ```vim
+     :map <key>  # e.g., :map <C-n>
+     ```
+
+  2. **Search all keymaps:**
+     ```vim
+     <leader>sk  # Search keymaps (LazyVim)
+     ```
+
+  3. **Verify keymap syntax:**
+     ```lua
+     -- Correct syntax
+     vim.keymap.set("n", "<leader>t", "<cmd>Telescope<cr>", { desc = "Telescope" })
+     ```
+
+  4. **Check loading order:**
+     Keymaps in `nvim/lua/config/keymaps.lua` load on `VeryLazy` event.
+
+  5. **Reload configuration:**
+     ```vim
+     :source %
+     ```
+</Accordion>
+
+<Accordion title="Clipboard not working (copy/paste)">
+  **Symptoms:** Can't copy from Neovim to system clipboard or paste from outside.
+
+  **Solutions:**
+
+  1. **Check clipboard support:**
+     ```vim
+     :checkhealth
+     ```
+     Look for clipboard provider errors.
+
+  2. **Install clipboard provider:**
+     - **macOS:** `pbcopy`/`pbpaste` (built-in)
+     - **Linux:** 
+       ```bash
+       sudo apt install xclip  # or xsel
+       ```
+
+  3. **Set clipboard option:**
+     ```lua
+     vim.opt.clipboard = "unnamedplus"  # Use system clipboard
+     ```
+
+  4. **Test clipboard:**
+     ```vim
+     :echo has('clipboard')
+     # Should return 1
+     ```
+</Accordion>
+
+---
+
+## Tmux Troubleshooting
+
+<Accordion title="TPM (Tmux Plugin Manager) not working">
+  **Symptoms:** Plugins don't install, `Prefix + I` does nothing, or plugins not loading.
+
+  **Solutions:**
+
+  1. **Verify TPM installation:**
+     ```bash
+     ls ~/.tmux/plugins/tpm
+     ```
+
+  2. **Install TPM if missing:**
+     ```bash
+     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+     ```
+
+  3. **Reload tmux configuration:**
+     ```bash
+     tmux source-file ~/.tmux.conf
+     ```
+
+  4. **Install plugins manually:**
+     ```bash
+     ~/.tmux/plugins/tpm/bin/install_plugins
+     ```
+
+  5. **Check tmux.conf syntax:**
+     ```bash
+     tmux source-file ~/.tmux.conf
+     # Look for error messages
+     ```
+
+  6. **Verify plugin paths:**
+     ```bash
+     set -g @plugin 'tmux-plugins/tpm'
+     run '~/.tmux/plugins/tpm/tpm'  # Must be at end of config
+     ```
+
+  <Warning>
+  The `run '~/.tmux/plugins/tpm/tpm'` line must be at the end of `tmux.conf`.
+  </Warning>
+</Accordion>
+
+<Accordion title="Colors not displaying correctly">
+  **Symptoms:** Theme looks wrong, colors are washed out, or 256-color not working.
+
+  **Solutions:**
+
+  1. **Check TERM variable:**
+     ```bash
+     echo $TERM
+     # Inside tmux should be "tmux-256color"
+     ```
+
+  2. **Fix TERM in tmux.conf:**
+     ```bash title="tmux/tmux.conf"
+     set -g default-terminal "tmux-256color"
+     set -ga terminal-overrides ',xterm-256color:Tc'
+     set-option -sa terminal-overrides ",xterm*:Tc:RGB"
+     ```
+
+  3. **Test color support:**
+     ```bash
+     # Inside tmux
+     tmux info | grep Tc
+     # Should show RGB or Tc support
+     ```
+
+  4. **Verify terminal emulator:**
+     Ensure your terminal (Alacritty, iTerm2, etc.) supports true color.
+
+  5. **Reload configuration:**
+     ```bash
+     tmux kill-server && tmux
+     ```
+
+  6. **Check theme plugin:**
+     ```bash
+     ls ~/.tmux/plugins/catppuccin-tmux
+     ```
+</Accordion>
+
+<Accordion title="Prefix key not working or conflicts">
+  **Symptoms:** Prefix key (`Ctrl+Space`) doesn't respond or conflicts with other apps.
+
+  **Solutions:**
+
+  1. **Verify prefix configuration:**
+     ```bash title="tmux/tmux.conf"
+     unbind C-b
+     set -g prefix C-Space
+     bind C-Space send-prefix
+     ```
+
+  2. **Test prefix:**
+     ```bash
+     # In tmux, press Prefix + ?
+     # Shows all keybindings
+     ```
+
+  3. **Change to different prefix:**
+     ```bash
+     set -g prefix C-a  # or C-b (default)
+     bind C-a send-prefix
+     ```
+
+  4. **Check for conflicts:**
+     Some apps (IDEs, terminals) may capture `Ctrl+Space`.
+
+  5. **Reload configuration:**
+     ```bash
+     tmux source-file ~/.tmux.conf
+     ```
+</Accordion>
+
+<Accordion title="Mouse not working">
+  **Symptoms:** Can't click, scroll, or select text with mouse.
+
+  **Solutions:**
+
+  1. **Enable mouse in tmux.conf:**
+     ```bash title="tmux/tmux.conf"
+     set -g mouse on
+     ```
+
+  2. **Reload configuration:**
+     ```bash
+     tmux source-file ~/.tmux.conf
+     ```
+
+  3. **Toggle mouse mode:**
+     ```bash
+     # Inside tmux
+     Prefix + : set -g mouse on
+     ```
+
+  4. **Check terminal support:**
+     Some terminals have limited mouse support in tmux.
+
+  5. **Copy text with mouse:**
+     - Hold `Option` (macOS) or `Shift` (Linux) while selecting to bypass tmux
+</Accordion>
+
+<Accordion title="Copy mode not working (vim keybindings)">
+  **Symptoms:** Can't enter copy mode, vim keys don't work, or can't copy to clipboard.
+
+  **Solutions:**
+
+  1. **Verify copy mode settings:**
+     ```bash title="tmux/tmux.conf"
+     setw -g mode-keys vi
+     bind-key [ copy-mode
+     bind-key -T copy-mode-vi 'v' send -X begin-selection
+     bind-key -T copy-mode-vi 'y' send -X copy-selection
+     ```
+
+  2. **Enter copy mode:**
+     ```bash
+     Prefix + [  # or Prefix + Escape
+     ```
+
+  3. **Copy to system clipboard:**
+     - **macOS:**
+       ```bash
+       bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel 'pbcopy'
+       ```
+     - **Linux:**
+       ```bash
+       bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
+       ```
+
+  4. **Test copy mode:**
+     ```bash
+     Prefix + [    # Enter copy mode
+     v             # Begin selection
+     y             # Copy selection
+     Prefix + ]    # Paste
+     ```
+</Accordion>
+
+<Accordion title="Tmux not starting or session issues">
+  **Symptoms:** Tmux won't start, sessions crash, or "protocol version mismatch" errors.
+
+  **Solutions:**
+
+  1. **Kill existing tmux server:**
+     ```bash
+     tmux kill-server
+     ```
+
+  2. **Check tmux version:**
+     ```bash
+     tmux -V
+     # Update if outdated
+     brew upgrade tmux  # macOS
+     ```
+
+  3. **Remove socket files:**
+     ```bash
+     rm -rf /tmp/tmux-*
+     ```
+
+  4. **Check configuration syntax:**
+     ```bash
+     tmux source-file ~/.tmux.conf
+     ```
+
+  5. **Start with default config:**
+     ```bash
+     tmux -f /dev/null
+     ```
+
+  6. **Check logs:**
+     ```bash
+     tmux source-file ~/.tmux.conf 2>&1 | grep error
+     ```
+</Accordion>
+
+---
+
+## Alacritty Troubleshooting
+
+<Accordion title="Theme not loading">
+  **Symptoms:** Theme import fails, default colors shown, or error on startup.
+
+  **Solutions:**
+
+  1. **Verify theme file exists:**
+     ```bash
+     ls ~/.config/alacritty/themes/themes/coolnight.toml
+     ```
+
+  2. **Check import path:**
+     ```toml title="alacritty/alacritty.toml"
+     general.import = [
+         "~/.config/alacritty/themes/themes/coolnight.toml"
+     ]
+     ```
+
+  3. **Use absolute path:**
+     ```toml
+     general.import = [
+         "/Users/username/.config/alacritty/themes/themes/coolnight.toml"
+     ]
+     ```
+
+  4. **Test theme directly:**
+     Temporarily copy theme contents into `alacritty.toml`.
+
+  5. **Check for TOML syntax errors:**
+     ```bash
+     alacritty --help  # Shows config errors
+     ```
+
+  6. **Clone theme repository:**
+     ```bash
+     git clone https://github.com/alacritty/alacritty-theme ~/.config/alacritty/themes
+     ```
+</Accordion>
+
+<Accordion title="Font not rendering correctly">
+  **Symptoms:** Font doesn't load, glyphs missing, or characters look wrong.
+
+  **Solutions:**
+
+  1. **Verify font is installed:**
+     ```bash
+     fc-list | grep "0xProto"  # or your font name
+     ```
+
+  2. **Install Nerd Font:**
+     ```bash
+     # macOS
+     brew tap homebrew/cask-fonts
+     brew install --cask font-0xproto-nerd-font
+     ```
+
+  3. **Check exact font name:**
+     ```bash
+     fc-list : family | grep -i "0xproto"
+     ```
+     Use exact name in config.
+
+  4. **Test different font:**
+     ```toml title="alacritty/alacritty.toml"
+     [font]
+     normal.family = "Menlo"  # System font to test
+     size = 14
+     ```
+
+  5. **Clear font cache:**
+     ```bash
+     fc-cache -f -v
+     ```
+
+  6. **Restart Alacritty:**
+     Font changes require restart.
+</Accordion>
+
+<Accordion title="Config file not loading or path issues">
+  **Symptoms:** Changes don't apply, Alacritty uses default config, or can't find config.
+
+  **Solutions:**
+
+  1. **Verify config path:**
+     ```bash
+     ls ~/.config/alacritty/alacritty.toml
+     ```
+
+  2. **Check Alacritty config location:**
+     - **macOS/Linux:** `~/.config/alacritty/alacritty.toml`
+     - **Windows:** `%APPDATA%\alacritty\alacritty.toml`
+
+  3. **Specify config explicitly:**
+     ```bash
+     alacritty --config-file ~/.config/alacritty/alacritty.toml
+     ```
+
+  4. **Check for syntax errors:**
+     ```bash
+     alacritty --print-events
+     ```
+     Errors appear in output.
+
+  5. **Use YAML (older Alacritty):**
+     If using Alacritty < 0.13, use `alacritty.yml` instead of `.toml`.
+
+  6. **Migration to TOML:**
+     ```bash
+     alacritty migrate  # Converts YAML to TOML
+     ```
+</Accordion>
+
+<Accordion title="Transparency/blur not working (macOS)">
+  **Symptoms:** Window opacity or blur effect doesn't apply.
+
+  **Solutions:**
+
+  1. **Check macOS version:**
+     Blur requires macOS 10.15+ (Catalina or later).
+
+  2. **Verify settings:**
+     ```toml title="alacritty/alacritty.toml"
+     [window]
+     opacity = 0.8  # 0.0 to 1.0
+     blur = true
+     ```
+
+  3. **Check window decorations:**
+     ```toml
+     [window]
+     decorations = "Buttonless"  # or "Transparent"
+     ```
+
+  4. **Restart Alacritty:**
+     Transparency changes require full restart.
+
+  5. **Check macOS permissions:**
+     System Settings > Privacy & Security > Screen Recording
+
+  6. **Test without theme:**
+     Temporarily remove theme import and test opacity.
+</Accordion>
+
+<Accordion title="Performance issues or slow rendering">
+  **Symptoms:** Lag when scrolling, slow text rendering, or high CPU usage.
+
+  **Solutions:**
+
+  1. **Update Alacritty:**
+     ```bash
+     alacritty --version
+     brew upgrade alacritty  # macOS
+     ```
+
+  2. **Disable blur:**
+     ```toml title="alacritty/alacritty.toml"
+     [window]
+     blur = false
+     ```
+
+  3. **Adjust refresh rate:**
+     Ensure monitor refresh rate is correctly detected.
+
+  4. **Check GPU usage:**
+     Alacritty uses GPU acceleration by default.
+
+  5. **Reduce font size:**
+     Larger fonts require more rendering.
+
+  6. **Check for background processes:**
+     Other apps may affect performance.
+</Accordion>
+
+---
+
+## AeroSpace Troubleshooting
+
+<Accordion title="AeroSpace not starting or window management not working">
+  **Symptoms:** Windows don't tile, AeroSpace doesn't launch, or keybindings don't work.
+
+  **Solutions:**
+
+  1. **Check if AeroSpace is running:**
+     ```bash
+     ps aux | grep -i aerospace
+     ```
+
+  2. **Start AeroSpace manually:**
+     ```bash
+     open -a AeroSpace
+     ```
+
+  3. **Enable at login:**
+     ```toml title="aerospace/aerospace.toml"
+     start-at-login = true
+     ```
+
+  4. **Check macOS permissions:**
+     System Settings > Privacy & Security > Accessibility
+     
+     Ensure AeroSpace is enabled.
+
+  5. **Reinstall AeroSpace:**
+     ```bash
+     brew reinstall aerospace
+     ```
+
+  6. **Check logs:**
+     ```bash
+     log show --predicate 'process == "AeroSpace"' --last 5m
+     ```
+</Accordion>
+
+<Accordion title="Keybinding conflicts with other apps">
+  **Symptoms:** AeroSpace shortcuts don't work in certain apps or conflict with macOS.
+
+  **Solutions:**
+
+  1. **Check for system shortcut conflicts:**
+     System Settings > Keyboard > Keyboard Shortcuts
+
+  2. **Use different modifier:**
+     ```toml title="aerospace/aerospace.toml"
+     [mode.main.binding]
+     cmd-h = 'focus left'  # Instead of alt-h
+     ```
+
+  3. **Disable conflicting macOS shortcuts:**
+     Common conflicts:
+     - `Cmd+H` (Hide window)
+     - `Alt+Tab` (Application switcher)
+
+  4. **Test keybindings:**
+     ```bash
+     aerospace list-windows
+     ```
+
+  5. **Reload config:**
+     ```toml
+     [mode.service.binding]
+     esc = ['reload-config', 'mode main']
+     ```
+     Then: `Alt+Shift+;` → `Esc`
+
+  6. **Check application-specific issues:**
+     Some apps (IDEs, terminals) capture keybindings before AeroSpace.
+</Accordion>
+
+<Accordion title="Windows not tiling correctly">
+  **Symptoms:** Windows overlap, don't resize properly, or gaps are wrong.
+
+  **Solutions:**
+
+  1. **Verify config syntax:**
+     ```bash
+     aerospace reload-config
+     ```
+     Errors appear in notification center.
+
+  2. **Check gaps configuration:**
+     ```toml title="aerospace/aerospace.toml"
+     [gaps]
+     inner.horizontal = 10
+     inner.vertical = 10
+     outer.left = 10
+     outer.bottom = 10
+     outer.top = 10
+     outer.right = 10
+     ```
+
+  3. **Reset layout:**
+     `Alt+Shift+;` (service mode) → `r` (reset)
+
+  4. **Check normalization settings:**
+     ```toml
+     enable-normalization-flatten-containers = true
+     enable-normalization-opposite-orientation-for-nested-containers = true
+     ```
+
+  5. **Manually flatten workspace:**
+     ```bash
+     aerospace flatten-workspace-tree
+     ```
+
+  6. **Check default layout:**
+     ```toml
+     default-root-container-layout = 'tiles'
+     default-root-container-orientation = 'auto'
+     ```
+</Accordion>
+
+<Accordion title="macOS permissions issues">
+  **Symptoms:** AeroSpace can't control windows, requests permissions repeatedly.
+
+  **Solutions:**
+
+  1. **Grant Accessibility permissions:**
+     System Settings > Privacy & Security > Accessibility > Enable AeroSpace
+
+  2. **Remove and re-add permissions:**
+     - Remove AeroSpace from Accessibility list
+     - Restart AeroSpace
+     - Re-grant permissions
+
+  3. **Reset permissions database:**
+     ```bash
+     tccutil reset Accessibility
+     ```
+     Then re-grant permissions.
+
+  4. **Check Screen Recording:**
+     System Settings > Privacy & Security > Screen Recording
+
+  5. **Disable SIP (not recommended):**
+     Only if absolutely necessary and you understand the risks.
+
+  6. **Check for third-party security software:**
+     Antivirus or security apps may block AeroSpace.
+</Accordion>
+
+<Accordion title="Config file not loading">
+  **Symptoms:** Changes don't apply, AeroSpace uses defaults, or config errors.
+
+  **Solutions:**
+
+  1. **Verify config path:**
+     ```bash
+     ls ~/.aerospace.toml
+     ```
+     AeroSpace looks for `~/.aerospace.toml`.
+
+  2. **Check TOML syntax:**
+     Use a TOML validator or check logs for errors.
+
+  3. **Copy default config:**
+     ```bash
+     cp /opt/homebrew/opt/aerospace/share/aerospace/examples/default-config.toml ~/.aerospace.toml
+     ```
+
+  4. **Reload config:**
+     ```bash
+     aerospace reload-config
+     ```
+
+  5. **Check for syntax errors:**
+     Notifications will show config errors.
+
+  6. **Test with minimal config:**
+     ```toml title="~/.aerospace.toml"
+     start-at-login = true
+
+     [mode.main.binding]
+     alt-h = 'focus left'
+     alt-l = 'focus right'
+     ```
+</Accordion>
+
+<Accordion title="Workspace switching issues">
+  **Symptoms:** Can't switch workspaces, windows disappear, or workspace shortcuts don't work.
+
+  **Solutions:**
+
+  1. **List workspaces:**
+     ```bash
+     aerospace list-workspaces
+     ```
+
+  2. **Check workspace bindings:**
+     ```toml title="aerospace/aerospace.toml"
+     [mode.main.binding]
+     alt-1 = 'workspace 1'
+     alt-2 = 'workspace 2'
+     # etc.
+     ```
+
+  3. **Focus workspace:**
+     ```bash
+     aerospace workspace 1
+     ```
+
+  4. **Move window to workspace:**
+     ```bash
+     aerospace move-node-to-workspace 1
+     ```
+
+  5. **Check monitor assignments:**
+     Workspaces may be on different monitors.
+
+  6. **Use workspace back-and-forth:**
+     ```toml
+     alt-tab = 'workspace-back-and-forth'
+     ```
+</Accordion>
+
+---
+
+## General Debugging Commands
+
+Useful commands for debugging across all tools:
+
+<CodeGroup>
+```bash Neovim
+# Check health
+nvim --headless "+checkhealth" +qa
+
+# View startup time
+nvim --startuptime startup.log
+
+# Check plugin status
+nvim --headless "+Lazy check" +qa
+
+# Update everything
+nvim --headless "+Lazy! sync" +qa
+```
+
+```bash Tmux
+# Reload config
+tmux source-file ~/.tmux.conf
+
+# Kill and restart
+tmux kill-server && tmux
+
+# Show keybindings
+tmux list-keys
+
+# Install plugins
+~/.tmux/plugins/tpm/bin/install_plugins
+```
+
+```bash Alacritty
+# Print events (debug mode)
+alacritty --print-events
+
+# Specify config
+alacritty --config-file ~/.config/alacritty/alacritty.toml
+
+# Check version
+alacritty --version
+
+# Migrate YAML to TOML
+alacritty migrate
+```
+
+```bash AeroSpace
+# Reload config
+aerospace reload-config
+
+# List windows
+aerospace list-windows
+
+# List workspaces
+aerospace list-workspaces
+
+# Flatten workspace
+aerospace flatten-workspace-tree
+
+# Check version
+aerospace --version
+```
+</CodeGroup>
+
+---
+
+## Getting Help
+
+If issues persist after trying these solutions:
+
+<CardGroup cols={2}>
+  <Card title="Neovim" icon="comment">
+    - [LazyVim Discussions](https://github.com/LazyVim/LazyVim/discussions)
+    - [Neovim Reddit](https://reddit.com/r/neovim)
+    - Run `:checkhealth` for diagnostics
+  </Card>
+  
+  <Card title="Tmux" icon="comment">
+    - [Tmux GitHub Issues](https://github.com/tmux/tmux/issues)
+    - [TPM Issues](https://github.com/tmux-plugins/tpm/issues)
+    - Check `~/.tmux/plugins/tpm/bin/` scripts
+  </Card>
+  
+  <Card title="Alacritty" icon="comment">
+    - [Alacritty GitHub Issues](https://github.com/alacritty/alacritty/issues)
+    - [Alacritty Discussions](https://github.com/alacritty/alacritty/discussions)
+    - Use `--print-events` flag for debug info
+  </Card>
+  
+  <Card title="AeroSpace" icon="comment">
+    - [AeroSpace GitHub Issues](https://github.com/nikitabobko/AeroSpace/issues)
+    - [AeroSpace Discussions](https://github.com/nikitabobko/AeroSpace/discussions)
+    - Check macOS Console.app for logs
+  </Card>
+</CardGroup>
+
+<Tip>
+When reporting issues, include:
+- Tool version
+- Operating system version
+- Relevant config snippets
+- Error messages or logs
+- Steps to reproduce
+</Tip>

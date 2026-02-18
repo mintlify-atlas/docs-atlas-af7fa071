@@ -1,0 +1,122 @@
+---
+title: 'Tmux Configuration Overview'
+description: 'Modern tmux configuration with vi keybindings, mouse support, and enhanced terminal support'
+---
+
+## Introduction
+
+This tmux configuration provides a modern, ergonomic setup focused on:
+- **Vi-mode keybindings** for familiar navigation
+- **Mouse support** for easy window/pane management
+- **True color support** for modern terminal applications
+- **Ergonomic prefix key** (Ctrl+Space instead of Ctrl+b)
+- **Sensible defaults** for window management
+
+## Prefix Key
+
+The default tmux prefix key (`Ctrl+b`) has been remapped to `Ctrl+Space` for easier access:
+
+```bash
+# Remap prefix from 'C-b' to 'C-Space'
+unbind C-b
+set -g prefix C-Space
+bind C-Space send-prefix
+```
+
+<Note>
+  `Ctrl+Space` is easier to press than `Ctrl+b` and reduces hand strain during extended tmux sessions.
+</Note>
+
+## Terminal Settings
+
+### True Color Support
+
+The configuration enables true color (24-bit RGB) support for modern terminal applications:
+
+```bash
+set-option -sa terminal-overrides ",xterm*:Tc:RGB:sitm=\E[3m:ritm=\E[23m"
+set -g default-terminal "tmux-256color"
+set -ga terminal-overrides ',xterm-256color:Tc'
+```
+
+This ensures:
+- Full RGB color support in neovim, editors, and color schemes
+- Proper italic text rendering (`sitm`/`ritm` escape codes)
+- Compatibility with xterm-based terminals
+
+### Performance Optimizations
+
+```bash
+set-option -sg escape-time 10
+set-option -g focus-events on
+```
+
+- **escape-time**: Reduced to 10ms for faster key response (critical for vi-mode)
+- **focus-events**: Enables focus events for better editor integration
+
+## Window Management
+
+### Window Numbering
+
+```bash
+set -g base-index 1
+set -g renumber-windows on
+```
+
+- **base-index 1**: Windows start at 1 instead of 0 (easier keyboard access)
+- **renumber-windows**: Automatically renumber windows when one is closed
+
+### Mouse Support
+
+```bash
+set -g mouse on
+```
+
+Enables mouse support for:
+- Selecting panes by clicking
+- Resizing panes by dragging borders
+- Scrolling through history
+- Selecting windows from the status bar
+
+## Vi Mode
+
+### Enable Vi Keybindings
+
+```bash
+setw -g mode-keys vi
+```
+
+Enables vi-style navigation in copy mode and other tmux modes.
+
+### Copy Mode Keybindings
+
+Vim-like keybindings for text selection and copying:
+
+```bash
+# Enter copy mode with Prefix+[
+bind-key [ copy-mode
+
+# Vim-like navigation in copy mode
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+```
+
+**Usage:**
+1. Press `Ctrl+Space` + `[` to enter copy mode
+2. Navigate with vi keys (`h`, `j`, `k`, `l`)
+3. Press `v` to start selection
+4. Press `y` to yank (copy) selection
+5. Press `V` for rectangular selection mode
+
+<Note>
+  Copy mode uses standard vi navigation keys, making it natural for vim users.
+</Note>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Plugins" icon="puzzle-piece" href="/tmux/plugins">
+    Learn about TPM and the Catppuccin theme plugin
+  </Card>
+</CardGroup>

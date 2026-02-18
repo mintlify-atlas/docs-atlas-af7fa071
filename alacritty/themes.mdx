@@ -1,0 +1,337 @@
+---
+title: 'Theme System'
+description: 'Managing and switching Alacritty themes'
+---
+
+## Overview
+
+The Alacritty configuration includes an extensive collection of **151 professionally-crafted themes**, making it easy to customize your terminal's appearance to match your preferences or workflow.
+
+## Theme Organization
+
+Themes are organized in a dedicated directory structure:
+
+```
+~/.config/alacritty/themes/
+├── themes/                     # Main themes directory
+│   ├── coolnight.toml          # Current active theme
+│   ├── tokyo_night.toml
+│   ├── gruvbox_dark.toml
+│   ├── solarized_dark.toml
+│   ├── nord.toml
+│   └── ... (151 total themes)
+└── print_colors.sh             # Color preview utility
+```
+
+## Current Theme: Coolnight
+
+The configuration currently uses the **coolnight** theme, a dark blue color scheme with vibrant accents:
+
+```toml coolnight.toml
+# By Josean Martinez
+# Inspired by aura.toml
+
+[colors.primary]
+background = '#011423'
+foreground = '#CBE0F0'
+
+[colors.cursor]
+text = "#011423"
+cursor = "#47FF9C"
+
+[colors.normal]
+black = "#214969"
+red = "#E52E2E"
+green = "#44FFB1"
+yellow = "#FFE073"
+blue = "#0FC5ED"
+magenta = "#a277ff"
+cyan = "#24EAF7"
+white = "#24EAF7"
+```
+
+### Theme Characteristics
+
+- **Background**: Deep navy blue (`#011423`) for reduced eye strain
+- **Foreground**: Light blue-white (`#CBE0F0`) for excellent readability
+- **Cursor**: Bright green (`#47FF9C`) for easy tracking
+- **Accent Colors**: Vibrant cyans, greens, and purples
+- **Inspiration**: Based on the popular Aura theme
+
+## How to Switch Themes
+
+Switching themes in Alacritty is straightforward and takes effect immediately without restarting the terminal.
+
+<Steps>
+  <Step title="Browse Available Themes">
+    List all available themes in the themes directory:
+    ```bash
+    ls ~/.config/alacritty/themes/themes/
+    ```
+    
+    You'll see 151 theme files including:
+    - Tokyo Night variants (storm, enhanced, default)
+    - Gruvbox variants (dark, light, material)
+    - Solarized (dark, light)
+    - Nord and Nordic
+    - GitHub themes (dark, light, high contrast)
+    - Catppuccin variants
+    - Dracula
+    - One Dark / One Light
+    - Monokai variants
+    - And many more!
+  </Step>
+
+  <Step title="Edit Main Configuration">
+    Open the main Alacritty configuration file:
+    ```bash
+    vim ~/.config/alacritty/alacritty.toml
+    # or
+    nvim ~/.config/alacritty/alacritty.toml
+    ```
+  </Step>
+
+  <Step title="Update Theme Import">
+    Modify the `general.import` line at the top of the file:
+    ```toml
+    general.import = [
+        "~/.config/alacritty/themes/themes/YOUR_THEME.toml"
+    ]
+    ```
+    
+    For example, to switch to Tokyo Night:
+    ```toml
+    general.import = [
+        "~/.config/alacritty/themes/themes/tokyo_night.toml"
+    ]
+    ```
+  </Step>
+
+  <Step title="Save and Enjoy">
+    Save the file - Alacritty will automatically reload the configuration and apply the new theme immediately!
+  </Step>
+</Steps>
+
+## Popular Theme Examples
+
+Here are some popular themes you can try:
+
+<CodeGroup>
+```toml Coolnight (Current)
+general.import = [
+    "~/.config/alacritty/themes/themes/coolnight.toml"
+]
+```
+
+```toml Tokyo Night
+general.import = [
+    "~/.config/alacritty/themes/themes/tokyo_night.toml"
+]
+```
+
+```toml Gruvbox Dark
+general.import = [
+    "~/.config/alacritty/themes/themes/gruvbox_dark.toml"
+]
+```
+
+```toml Nord
+general.import = [
+    "~/.config/alacritty/themes/themes/nord.toml"
+]
+```
+
+```toml Catppuccin Mocha
+general.import = [
+    "~/.config/alacritty/themes/themes/catppuccin_mocha.toml"
+]
+```
+
+```toml Dracula
+general.import = [
+    "~/.config/alacritty/themes/themes/dracula.toml"
+]
+```
+
+```toml One Dark
+general.import = [
+    "~/.config/alacritty/themes/themes/one_dark.toml"
+]
+```
+
+```toml Solarized Dark
+general.import = [
+    "~/.config/alacritty/themes/themes/solarized_dark.toml"
+]
+```
+</CodeGroup>
+
+## Complete Theme Collection
+
+The configuration includes 151 themes across various categories:
+
+### Dark Themes
+- **Blue-tinted**: coolnight, tokyo_night, night_owl, oceanic_next, horizon_dark
+- **Warm**: gruvbox_dark, monokai, dracula, material_theme
+- **Cool**: nord, nordfox, nightfox, arctic, zenburn
+- **Purple**: synthwave_84, iris, palenight, midnight_haze
+- **Minimal**: low_contrast, pencil_dark, tomorrow_night
+
+### Light Themes
+- github_light, solarized_light, gruvbox_light, one_light
+- papercolor_light, selenized_light, pencil_light
+- tomorrow_night_bright, noctis_lux
+
+### Specialized Themes
+- **High Contrast**: high_contrast, github_dark_high_contrast
+- **Accessibility**: github_light_colorblind, github_light_tritanopia
+- **Variants**: Multiple Tokyo Night, Gruvbox, and Rose Pine variants
+
+<Tip>
+  Many themes have variants (e.g., tokyo_night, tokyo_night_storm, tokyo_night_enhanced). Try different variants of your favorite theme to find the perfect balance!
+</Tip>
+
+## Theme Preview Utility
+
+The themes directory includes a `print_colors.sh` script for previewing color palettes:
+
+```bash
+# Preview colors in your current theme
+bash ~/.config/alacritty/themes/print_colors.sh
+```
+
+This script displays all 16 terminal colors (8 normal + 8 bright) so you can see how your theme looks before committing to it.
+
+## Creating Custom Themes
+
+You can create your own custom theme by copying an existing one:
+
+<Steps>
+  <Step title="Copy a Base Theme">
+    ```bash
+    cp ~/.config/alacritty/themes/themes/coolnight.toml \
+       ~/.config/alacritty/themes/themes/mytheme.toml
+    ```
+  </Step>
+
+  <Step title="Edit Color Values">
+    Modify the color values in your new theme file:
+    ```toml
+    [colors.primary]
+    background = '#YOUR_BG_COLOR'
+    foreground = '#YOUR_FG_COLOR'
+    
+    [colors.cursor]
+    text = "#YOUR_CURSOR_TEXT"
+    cursor = "#YOUR_CURSOR_COLOR"
+    
+    [colors.normal]
+    black = "#YOUR_BLACK"
+    red = "#YOUR_RED"
+    green = "#YOUR_GREEN"
+    # ... and so on
+    ```
+  </Step>
+
+  <Step title="Apply Your Theme">
+    Update your main configuration:
+    ```toml
+    general.import = [
+        "~/.config/alacritty/themes/themes/mytheme.toml"
+    ]
+    ```
+  </Step>
+</Steps>
+
+## Theme Categories Reference
+
+<AccordionGroup>
+  <Accordion title="Blue & Cyan Themes (20+)">
+    coolnight, tokyo_night (3 variants), oceanic_next, horizon_dark, nightfly, night_owl, moonfly, moonlight_ii_vscode, terafox, nordfox, nightfox, nord, nordic, low_contrast, iterm, terminal_app, ayu_dark, ayu_mirage, breeze, deep_space
+  </Accordion>
+
+  <Accordion title="Green & Earth Tones (15+)">
+    gruvbox_dark, gruvbox_light, gruvbox_material (5 variants), palenight, everforest, nord_light, tender, wombat, zenburn
+  </Accordion>
+
+  <Accordion title="Purple & Pink (12+)">
+    dracula, synthwave_84, iris, rose_pine (3 variants), midnight_haze, hardhacker, hatsunemiku, thelovelace, vesper
+  </Accordion>
+
+  <Accordion title="Monochrome & Minimal (10+)">
+    one_dark, one_light, github_dark (5 variants), github_light (5 variants), high_contrast, low_contrast, pencil_dark, pencil_light
+  </Accordion>
+
+  <Accordion title="Warm & Retro (10+)">
+    monokai, monokai_pro, monokai_charcoal, material_theme, material_theme_mod, snazzy, hyper, taerminal, omni
+  </Accordion>
+
+  <Accordion title="Solarized & Classic (8+)">
+    solarized_dark, solarized_light, solarized_osaka, papercolor_dark, papercolor_light, selenized_dark, selenized_light, tango_dark
+  </Accordion>
+
+  <Accordion title="Specialized & Unique (10+)">
+    catppuccin (4 variants), kanagawa_wave, kanagawa_dragon, oxocarbon, meliora, miasma, inferno, sonokai, vscode, xterm
+  </Accordion>
+</AccordionGroup>
+
+## Tips for Choosing Themes
+
+<CardGroup cols={2}>
+  <Card title="For Long Coding Sessions" icon="code">
+    Try dark blue themes like **coolnight**, **tokyo_night**, or **oceanic_next** - they reduce eye strain
+  </Card>
+  
+  <Card title="For Daytime Use" icon="sun">
+    Light themes like **solarized_light**, **github_light**, or **one_light** work great in bright environments
+  </Card>
+  
+  <Card title="For High Contrast" icon="circle-half-stroke">
+    Use **high_contrast**, **github_dark_high_contrast**, or **dracula** for maximum readability
+  </Card>
+  
+  <Card title="For Aesthetic" icon="palette">
+    Try vibrant themes like **synthwave_84**, **rose_pine**, or **catppuccin_mocha** for beautiful visuals
+  </Card>
+</CardGroup>
+
+<Tip>
+  **Pro Tip**: Keep a few favorite themes bookmarked by commenting them out in your config file:
+  ```toml
+  general.import = [
+      "~/.config/alacritty/themes/themes/coolnight.toml"
+      # "~/.config/alacritty/themes/themes/tokyo_night.toml"
+      # "~/.config/alacritty/themes/themes/gruvbox_dark.toml"
+  ]
+  ```
+  This makes it easy to switch between favorites by uncommenting/commenting lines!
+</Tip>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Theme not loading">
+    Verify the theme file path is correct:
+    ```bash
+    ls ~/.config/alacritty/themes/themes/YOUR_THEME.toml
+    ```
+    Check for typos in the theme filename in your `alacritty.toml`.
+  </Accordion>
+
+  <Accordion title="Colors look wrong">
+    Ensure your `TERM` environment variable is set correctly:
+    ```toml
+    [ env ]
+    TERM = "xterm-256color"
+    ```
+    This should be in your main `alacritty.toml` file.
+  </Accordion>
+
+  <Accordion title="Configuration not reloading">
+    Alacritty auto-reloads, but if needed, manually reload with:
+    - macOS: `Cmd + Q` then reopen
+    - Linux: `Ctrl + Shift + Q` then reopen
+    
+    Or check for syntax errors in your TOML file.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,150 @@
+---
+title: 'AeroSpace Overview'
+description: 'AeroSpace tiling window manager configuration for macOS'
+---
+
+## Introduction
+
+AeroSpace is a tiling window manager for macOS that provides powerful keyboard-driven window management. This configuration provides a comprehensive setup for managing windows, workspaces, and layouts efficiently.
+
+## Installation
+
+The configuration file should be placed at:
+
+```bash
+~/.aerospace.toml
+```
+
+After copying the configuration, you can edit `~/.aerospace.toml` to customize it to your preferences. If any keys are missing from your config, AeroSpace will use the defaults from `default-config.toml` as a fallback.
+
+## Core Configuration
+
+### Startup Behavior
+
+<CodeGroup>
+```toml Configuration
+start-at-login = true
+after-login-command = []
+after-startup-command = []
+```
+</CodeGroup>
+
+- **start-at-login**: AeroSpace automatically starts when you log into macOS
+- **after-login-command**: Commands to run after login (currently empty)
+- **after-startup-command**: Commands to run after AeroSpace starts (currently empty)
+
+### Normalization Settings
+
+<CodeGroup>
+```toml Normalizations
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+```
+</CodeGroup>
+
+These normalizations help maintain a clean and predictable window layout:
+- **flatten-containers**: Prevents unnecessary container nesting
+- **opposite-orientation-for-nested-containers**: Automatically alternates orientation for nested containers
+
+Learn more about [normalizations](https://nikitabobko.github.io/AeroSpace/guide#normalization).
+
+## Window Layouts
+
+### Layout Types
+
+AeroSpace supports two primary layout modes:
+
+<CodeGroup>
+```toml Layout Settings
+default-root-container-layout = 'tiles'
+accordion-padding = 30
+```
+</CodeGroup>
+
+<AccordionGroup>
+  <Accordion title="Tiles Layout">
+    The default tiling layout where windows are arranged in a grid pattern. Windows split the available space proportionally.
+    
+    Switch to tiles layout: `Alt + /`
+  </Accordion>
+  
+  <Accordion title="Accordion Layout">
+    An alternative layout with padding between windows. The accordion-padding is set to 30 pixels, creating visual separation between windows.
+    
+    Switch to accordion layout: `Alt + ,`
+  </Accordion>
+</AccordionGroup>
+
+### Container Orientation
+
+<CodeGroup>
+```toml Orientation
+default-root-container-orientation = 'auto'
+```
+</CodeGroup>
+
+The `auto` orientation intelligently adapts to your monitor:
+- **Wide monitors** (wider than tall): horizontal orientation
+- **Tall monitors** (taller than wide): vertical orientation
+
+Other possible values: `horizontal`, `vertical`
+
+## Window Gaps
+
+<CodeGroup>
+```toml Gaps Configuration
+[gaps]
+inner.horizontal = 0
+inner.vertical = 0
+outer.left = 0
+outer.bottom = 0
+outer.top = 0
+outer.right = 0
+```
+</CodeGroup>
+
+This configuration uses no gaps between windows or monitor edges:
+- **inner gaps**: Space between windows (0px)
+- **outer gaps**: Space between windows and monitor edges (0px)
+
+You can customize these values to add visual separation if desired.
+
+## Mouse Behavior
+
+<CodeGroup>
+```toml Mouse Follows Focus
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focus-changed = "move-mouse window-lazy-center"
+```
+</CodeGroup>
+
+The mouse cursor automatically follows focus:
+- When switching monitors, the mouse moves to the center of the focused monitor
+- When switching windows, the mouse moves to the center of the focused window
+
+This creates a seamless experience where your mouse is always near the active window.
+
+## Keyboard Layout
+
+<CodeGroup>
+```toml Key Mapping
+key-mapping.preset = 'qwerty'
+```
+</CodeGroup>
+
+The configuration uses the QWERTY keyboard layout preset. If you use Dvorak, change this to `'dvorak'`.
+
+## Available Commands
+
+For a complete list of available commands and their usage, see the [official AeroSpace commands documentation](https://nikitabobko.github.io/AeroSpace/commands).
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Keybindings" icon="keyboard" href="/aerospace/keybindings">
+    Explore all available keyboard shortcuts for window management
+  </Card>
+  <Card title="Official Guide" icon="book" href="https://nikitabobko.github.io/AeroSpace/guide">
+    Read the complete AeroSpace documentation
+  </Card>
+</CardGroup>
